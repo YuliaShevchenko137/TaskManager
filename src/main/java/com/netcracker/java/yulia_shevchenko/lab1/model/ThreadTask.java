@@ -12,11 +12,6 @@ import javafx.scene.control.Alert;
 public class ThreadTask {
 
     /**
-     * Map with tasks.
-     */
-    private ArrayTaskList thisTasks;
-
-    /**
      *map with calls.
      * true, if the notification was at this time.
      */
@@ -38,9 +33,9 @@ public class ThreadTask {
      * @param tasks current tasks for alert.
      */
     public ThreadTask(final ArrayTaskList tasks) {
-        this.thisTasks = tasks;
+        ArrayTaskList thisTasks = tasks;
         this.timeStamps = new TreeMap<>();
-        this.thread = new Thread(() -> {
+        new Thread(() -> {
             while (work) {
                 Date nowPlusHalfMinute = OperationForTime.localDateTimeToDate(
                         OperationForTime.dateToLocalDateTime(

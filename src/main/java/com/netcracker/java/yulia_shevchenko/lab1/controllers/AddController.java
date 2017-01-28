@@ -221,14 +221,9 @@ public class AddController {
      * @return new task.
      */
     private Task createRepeatedTask() {
-        String title = this.taskName.getText();
-        if (title.length() == 0) {
-            LOGGER.warn(Error.ERROR_EMPTY_TITLE.message());
-            this.str1 += Error.ERROR_EMPTY_TITLE.message() + Constants.ENTER;
-        }
-        String str = this.dateStart.getValue().toString()
+        String s1 = this.dateStart.getValue().toString()
                 + Constants.SPACE + this.timeStart.getText();
-        Date start = OperationForTime.parseDate(str);
+        Date start = OperationForTime.parseDate(s1);
         if (start == null) {
             LOGGER.warn(Error.ERROR_START_TIME.message());
             this.str1 += Error.ERROR_START_TIME.message() + Constants.ENTER;
@@ -250,7 +245,7 @@ public class AddController {
         this.str1 += interval.errorInterval()
                 + interval.errorEmptyInterval();
         if ("".equals(this.str1)) {
-            Task task = new Task(title, start, end, interval);
+            Task task = new Task(this.createTaskTitle(), start, end, interval);
             task.setRepeated(true);
             task.getInterval();
             if (this.activeTrue.isSelected()) {
@@ -285,21 +280,16 @@ public class AddController {
      * @return new task.
      */
     private Task createNoRepeatedTask() {
-        String title = this.taskName.getText();
-        if (title.length() == 0) {
-            LOGGER.warn(Error.ERROR_EMPTY_TITLE.message());
-            this.str1 += Error.ERROR_EMPTY_TITLE.message() + Constants.ENTER;
-        }
         String str = this.dateStart.getValue().toString()
                 + Constants.SPACE + this.timeStart.getText();
-        Date start = OperationForTime.parseDate(str);
-        if (start == null) {
+        Date time = OperationForTime.parseDate(str);
+        if (time == null) {
             LOGGER.warn(Error.ERROR_TIME.message());
             this.str1 += Error.ERROR_TIME.message() + Constants.ENTER;
-            start = new Date(Constants.ZERO);
+            time = new Date(Constants.ZERO);
         }
         if ("".equals(this.str1)) {
-            Task task = new Task(title, start);
+            Task task = new Task(this.createTaskTitle(), time);
             task.setRepeated(false);
             task.getInterval();
             task.setActive(this.activeTrue.isSelected());
@@ -307,6 +297,19 @@ public class AddController {
         } else {
             return null;
         }
+    }
+
+    /**
+     * Reate task title and if title incorrect, create error message.
+     * @return task title.
+     */
+    private String createTaskTitle() {
+        String title = this.taskName.getText();
+        if (title.length() == 0) {
+            LOGGER.warn(Error.ERROR_EMPTY_TITLE.message());
+            this.str1 += Error.ERROR_EMPTY_TITLE.message() + Constants.ENTER;
+        }
+        return title;
     }
 
     /**
