@@ -1,4 +1,4 @@
-package com.netcracker.java.YuliaShevchenko.lab1.model;
+package com.netcracker.java.yulia_shevchenko.lab1.model;
 
 import org.apache.log4j.Logger;
 
@@ -14,7 +14,7 @@ public class ArrayTaskList extends TaskList implements Cloneable, Serializable {
     /**
      * Version control for serialization.
      */
-    static final long serialVersionUID = 42L;
+    private static final long serialVersionUID = 42L;
 
     /**
      * It is used to register error.

@@ -1,13 +1,14 @@
-package com.netcracker.java.YuliaShevchenko.lab1.controllers;
+package com.netcracker.java.yulia_shevchenko.lab1.controllers;
 
-import com.netcracker.java.YuliaShevchenko.lab1.model.Constants;
-import com.netcracker.java.YuliaShevchenko.lab1.model.Task;
-import com.netcracker.java.YuliaShevchenko.lab1.model.TaskIO;
+import com.netcracker.java.yulia_shevchenko.lab1.model.Constants;
+import com.netcracker.java.yulia_shevchenko.lab1.model.Task;
+import com.netcracker.java.yulia_shevchenko.lab1.model.TaskIO;
 
 import java.io.File;
 import java.util.Date;
 import java.util.Map;
 import java.util.Set;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -141,7 +142,7 @@ public class CalendarController {
      * Filling by key map list.
      * @param map map with key.
      */
-    final void fillingList(final Map<Date, Set<Task>> map) {
+    public final void fillingList(final Map<Date, Set<Task>> map) {
         Set<Date> dateSet = map.keySet();
         ObservableList<Date> dateObs = FXCollections.observableArrayList();
         for (Date t : dateSet) {
@@ -155,7 +156,7 @@ public class CalendarController {
      * Setter for map.
      * @param map new map.
      */
-    final void setMaps(final Map<Date, Set<Task>> map) {
+    public final void setMaps(final Map<Date, Set<Task>> map) {
         this.maps = map;
     }
 }

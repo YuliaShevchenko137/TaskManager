@@ -1,9 +1,6 @@
-package com.netcracker.java.YuliaShevchenko.lab1.model;
+package com.netcracker.java.yulia_shevchenko.lab1.model;
 
-import java.util.Date;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeMap;
+import java.util.*;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
 
@@ -17,7 +14,7 @@ public class ThreadTask {
     /**
      * Map with tasks.
      */
-    private ArrayTaskList thistasks;
+    private ArrayTaskList thisTasks;
 
     /**
      *map with calls.
@@ -41,16 +38,16 @@ public class ThreadTask {
      * @param tasks current tasks for alert.
      */
     public ThreadTask(final ArrayTaskList tasks) {
-        this.thistasks = tasks;
+        this.thisTasks = tasks;
         this.timeStamps = new TreeMap<>();
         this.thread = new Thread(() -> {
             while (work) {
-                Date nowPlusDay = OperationForTime.localDateTimeToDate(
+                Date nowPlusHalfMinute = OperationForTime.localDateTimeToDate(
                         OperationForTime.dateToLocalDateTime(
-                                OperationForTime.nowTime()).plusHours(1));
-                if (thistasks.size() != 0) {
-                    Map<Date, Set<Task>> map = Tasks.calendar(thistasks,
-                            OperationForTime.nowTime(), nowPlusDay);
+                                OperationForTime.nowTime()).plusMinutes(30));
+                if (thisTasks.size() != 0) {
+                    Map<Date, Set<Task>> map = Tasks.calendar(thisTasks,
+                            OperationForTime.nowTime(), nowPlusHalfMinute);
                     Set<Date> dates = map.keySet();
                     for (Date date : dates) {
                         if (!timeStamps.containsKey(date)) {
@@ -83,6 +80,35 @@ public class ThreadTask {
             }
         });
         this.thread.start();
+    }
+
+    /**
+     * Add task in TaskList.
+     * @param task current task for add.
+     */
+    public void add(Task task) {
+        Date nowPlusHalfMinute = OperationForTime.localDateTimeToDate(
+                OperationForTime.dateToLocalDateTime(
+                        OperationForTime.nowTime()).plusMinutes(30));
+        List<Task> list = new ArrayList<>();
+        list.add(task);
+        Map<Date, Set<Task>> map = Tasks.calendar(list,
+                OperationForTime.nowTime(), nowPlusHalfMinute);
+        for (Date date : map.keySet()) {
+            Set<Task> set = map.get(date);
+            for (Task thisTask : set) {
+                Platform.runLater(() -> {
+                    Alert inf = new Alert(Alert.
+                            AlertType.INFORMATION);
+                    inf.setTitle("Notification");
+                    inf.setHeaderText("At " + date
+                            + " it is necessary to perform:"
+                            + Constants.ENTER + thisTask.getTitle());
+                    inf.show();
+                });
+            }
+            timeStamps.put(date, true);
+        }
     }
 
     /**

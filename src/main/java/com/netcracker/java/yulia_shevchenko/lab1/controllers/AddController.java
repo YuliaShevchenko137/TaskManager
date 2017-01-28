@@ -1,12 +1,12 @@
-package com.netcracker.java.YuliaShevchenko.lab1.controllers;
+package com.netcracker.java.yulia_shevchenko.lab1.controllers;
 
+import com.netcracker.java.yulia_shevchenko.lab1.model.Error;
 import org.apache.log4j.Logger;
 
-import com.netcracker.java.YuliaShevchenko.lab1.model.Constants;
-import com.netcracker.java.YuliaShevchenko.lab1.model.CreateInterval;
-import com.netcracker.java.YuliaShevchenko.lab1.model.Error;
-import com.netcracker.java.YuliaShevchenko.lab1.model.OperationForTime;
-import com.netcracker.java.YuliaShevchenko.lab1.model.Task;
+import com.netcracker.java.yulia_shevchenko.lab1.model.Constants;
+import com.netcracker.java.yulia_shevchenko.lab1.model.CreateInterval;
+import com.netcracker.java.yulia_shevchenko.lab1.model.OperationForTime;
+import com.netcracker.java.yulia_shevchenko.lab1.model.Task;
 
 import java.time.LocalDate;
 import java.util.Date;
@@ -106,12 +106,6 @@ public class AddController {
      */
     @FXML
     private RadioButton activeTrue;
-
-    /**
-     * RadioButton: inactive task.
-     */
-    @FXML
-    private RadioButton activeFalse;
 
     /**
      * label error message when data incorrect.
@@ -253,6 +247,8 @@ public class AddController {
             this.str1 += Error.ERROR_EARLIER_TIME.message() + Constants.ENTER;
         }
         CreateInterval interval = this.createNewInterval();
+        this.str1 += interval.errorInterval()
+                + interval.errorEmptyInterval();
         if ("".equals(this.str1)) {
             Task task = new Task(title, start, end, interval);
             task.setRepeated(true);
@@ -278,49 +274,10 @@ public class AddController {
         final int intervalHour = Integer.parseInt(this.getHour().getText());
         final int intervalMinute = Integer.parseInt(this.getMinute().getText());
         final int intervalSecond = Integer.parseInt(this.getSecond().getText());
-        if (intervalMonth < Constants.ZERO 
-                || intervalMonth > Constants.MAX_MONTHS) {
-            LOGGER.warn(Error.ERROR_COUNT_MONTHS.message());
-            this.str1 += Error.ERROR_COUNT_MONTHS.message()
-                    + Constants.ENTER;
-        }
-        if (intervalDay < Constants.ZERO 
-                || intervalDay > Constants.MAX_DAYS) {
-            LOGGER.warn(Error.ERROR_COUNT_DAYS.message());
-            this.str1 += Error.ERROR_COUNT_DAYS.message()
-                    + Constants.ENTER;
-        }
-        if (intervalHour < Constants.ZERO 
-                || intervalHour > Constants.MAX_HOURS) {
-            LOGGER.warn(Error.ERROR_COUNT_HOURS.message());
-            this.str1 += Error.ERROR_COUNT_HOURS.message()
-                    + Constants.ENTER;
-        }
-        if (intervalMinute < Constants.ZERO 
-                || intervalMinute > Constants.MAX_MINUTES) {
-            LOGGER.warn(Error.ERROR_COUNT_MINUTES.message());
-            this.str1 += Error.ERROR_COUNT_MINUTES.message()
-                    + Constants.ENTER;
-        }
-        if (intervalSecond < Constants.ZERO 
-                || intervalSecond > Constants.MAX_SECONDS) {
-            LOGGER.warn(Error.ERROR_COUNT_SECONDS.message());
-            this.str1 += Error.ERROR_COUNT_SECONDS.message()
-                    + Constants.ENTER;
-        }
-        boolean part1 = intervalYear == Constants.ZERO
-                && intervalMonth == Constants.ZERO
-                && intervalDay == Constants.ZERO;
-        boolean part2 = intervalHour == Constants.ZERO
-                && intervalMinute == Constants.ZERO
-                && intervalSecond == Constants.ZERO;
-        if (part1 && part2) {
-            LOGGER.warn(Error.ERROR_INTERVAL.message());
-            this.str1 += Error.ERROR_INTERVAL.message();
-        }
         return new CreateInterval(intervalYear, intervalMonth, intervalDay,
                 intervalHour, intervalMinute, intervalSecond);
     }
+
 
     /**
      * Method createNoRepeatedTask().

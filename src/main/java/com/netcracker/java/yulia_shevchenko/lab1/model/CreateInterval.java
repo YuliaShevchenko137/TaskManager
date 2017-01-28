@@ -1,10 +1,18 @@
-package com.netcracker.java.YuliaShevchenko.lab1.model;
+package com.netcracker.java.yulia_shevchenko.lab1.model;
+
+import org.apache.log4j.Logger;
 
 /**
  * Class CreateInterval.
  * Helper class for creating repeated interval.
  */
 public class CreateInterval {
+
+    /**
+     * It is used to register error.
+     */
+    private static final Logger LOGGER
+            = Logger.getLogger(CreateInterval.class);
 
     /**
      * component interval in years.
@@ -134,5 +142,63 @@ public class CreateInterval {
 
     public final int getIntervalSecond() {
         return this.intervalSecond;
+    }
+
+    /**
+     * Create error message about filling interval.
+     * @return error message.
+     */
+    public String errorInterval() {
+        String str1 = "";
+        if (this.intervalMonth < Constants.ZERO
+                || this.intervalMonth > Constants.MAX_MONTHS) {
+            LOGGER.warn(Error.ERROR_COUNT_MONTHS.message());
+            str1 += Error.ERROR_COUNT_MONTHS.message()
+                    + Constants.ENTER;
+        }
+        if (this.intervalDay < Constants.ZERO
+                || this.intervalDay > Constants.MAX_DAYS) {
+            LOGGER.warn(Error.ERROR_COUNT_DAYS.message());
+            str1 += Error.ERROR_COUNT_DAYS.message()
+                    + Constants.ENTER;
+        }
+        if (this.intervalHour < Constants.ZERO
+                || this.intervalHour > Constants.MAX_HOURS) {
+            LOGGER.warn(Error.ERROR_COUNT_HOURS.message());
+            str1 += Error.ERROR_COUNT_HOURS.message()
+                    + Constants.ENTER;
+        }
+        if (this.intervalMinute < Constants.ZERO
+                || this.intervalMinute > Constants.MAX_MINUTES) {
+            LOGGER.warn(Error.ERROR_COUNT_MINUTES.message());
+            str1 += Error.ERROR_COUNT_MINUTES.message()
+                    + Constants.ENTER;
+        }
+        if (this.intervalSecond < Constants.ZERO
+                || this.intervalSecond > Constants.MAX_SECONDS) {
+            LOGGER.warn(Error.ERROR_COUNT_SECONDS.message());
+            str1 += Error.ERROR_COUNT_SECONDS.message()
+                    + Constants.ENTER;
+        }
+        return str1;
+    }
+
+    /**
+     * Create error massage about empty repeater interval.
+     * @return error message.
+     */
+    public String errorEmptyInterval() {
+        boolean part1 = this.intervalYear == Constants.ZERO
+                && this.intervalMonth == Constants.ZERO
+                && this.intervalDay == Constants.ZERO;
+        boolean part2 = this.intervalHour == Constants.ZERO
+                && this.intervalMinute == Constants.ZERO
+                && this.intervalSecond == Constants.ZERO;
+        if (part1 && part2) {
+            LOGGER.warn(Error.ERROR_INTERVAL.message());
+            return Error.ERROR_INTERVAL.message();
+        } else {
+            return "";
+        }
     }
 }

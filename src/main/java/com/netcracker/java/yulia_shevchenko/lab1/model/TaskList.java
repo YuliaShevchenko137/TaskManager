@@ -1,4 +1,4 @@
-package com.netcracker.java.YuliaShevchenko.lab1.model;
+package com.netcracker.java.yulia_shevchenko.lab1.model;
 
 import java.io.Serializable;
 import java.util.Iterator;
@@ -13,7 +13,7 @@ public abstract class TaskList implements Iterable<Task>, Serializable {
     /**
      * Version control for serialization.
      */
-    static final long serialVersionUID = 42L;
+    private static final long serialVersionUID = 42L;
 
     /**
      * Method add(Task task).

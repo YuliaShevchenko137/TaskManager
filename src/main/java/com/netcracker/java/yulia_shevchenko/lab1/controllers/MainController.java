@@ -1,15 +1,15 @@
-package com.netcracker.java.YuliaShevchenko.lab1.controllers;
+package com.netcracker.java.yulia_shevchenko.lab1.controllers;
 
-import com.netcracker.java.YuliaShevchenko.lab1.model.ArrayTaskList;
-import com.netcracker.java.YuliaShevchenko.lab1.model.Error;
-import com.netcracker.java.YuliaShevchenko.lab1.model.CollectionsTasks;
-import com.netcracker.java.YuliaShevchenko.lab1.model.Constants;
-import com.netcracker.java.YuliaShevchenko.lab1.model.CreateInterval;
-import com.netcracker.java.YuliaShevchenko.lab1.model.OperationForTime;
-import com.netcracker.java.YuliaShevchenko.lab1.model.Task;
-import com.netcracker.java.YuliaShevchenko.lab1.model.TaskIO;
-import com.netcracker.java.YuliaShevchenko.lab1.model.Tasks;
-import com.netcracker.java.YuliaShevchenko.lab1.model.ThreadTask;
+import com.netcracker.java.yulia_shevchenko.lab1.model.ArrayTaskList;
+import com.netcracker.java.yulia_shevchenko.lab1.model.Error;
+import com.netcracker.java.yulia_shevchenko.lab1.model.CollectionsTasks;
+import com.netcracker.java.yulia_shevchenko.lab1.model.Constants;
+import com.netcracker.java.yulia_shevchenko.lab1.model.CreateInterval;
+import com.netcracker.java.yulia_shevchenko.lab1.model.OperationForTime;
+import com.netcracker.java.yulia_shevchenko.lab1.model.Task;
+import com.netcracker.java.yulia_shevchenko.lab1.model.TaskIO;
+import com.netcracker.java.yulia_shevchenko.lab1.model.Tasks;
+import com.netcracker.java.yulia_shevchenko.lab1.model.ThreadTask;
 
 import org.apache.log4j.Logger;
 
@@ -438,7 +438,7 @@ public final class MainController {
     public void add(final ActionEvent actionEvent) throws IOException {
         Stage addStage = new Stage();
         FXMLLoader addfxmlLoader = new FXMLLoader();
-        addfxmlLoader.setLocation(getClass().getResource("/com/netcracker/java/YuliaShevchenko/lab1/view/add.fxml"));
+        addfxmlLoader.setLocation(getClass().getResource("/com/netcracker/java/yulia_shevchenko/lab1/view/add.fxml"));
         Parent root = addfxmlLoader.load();
         addStage.setTitle("Add task");
         addStage.setMinHeight(this.minHeight);
@@ -451,9 +451,9 @@ public final class MainController {
         addStage.showAndWait();
         AddController addController = addfxmlLoader.getController();
         if (addController.isBool()) {
-            this.obs.add(addController.getNewTask());
-            this.thread.close();
-            this.thread = new ThreadTask(this.obs.getTasks());
+            Task task = addController.getNewTask();
+            this.obs.add(task);
+            this.thread.add(task);
             this.taskTable.setItems(this.obs.getObs());
             this.labelSize.setText(Constants.COUNT_TASK
                     + this.obs.getObs().size());
@@ -512,7 +512,7 @@ public final class MainController {
         Stage calendarStage = new Stage();
         FXMLLoader calendarfxmlLoader = new FXMLLoader();
         calendarfxmlLoader.setLocation(
-                getClass().getResource("/com/netcracker/java/YuliaShevchenko/lab1/view/calendar.fxml"));
+                getClass().getResource("/com/netcracker/java/yulia_shevchenko/lab1/view/calendar.fxml"));
         Parent root = calendarfxmlLoader.load();
         calendarStage.setTitle("Calendar");
         calendarStage.setMinHeight(this.minHeight);
@@ -566,9 +566,7 @@ public final class MainController {
             task.getInterval();
             this.obs.add(task);
             this.taskTable.refresh();
-            this.thread.close();
-            this.thread = new ThreadTask(this.obs.getTasks());
-            TaskIO.writeText(this.obs.getTasks(), this.temp);
+            this.thread.add(task);
             this.countChanges = -1;
             this.change.setVisible(true);
             this.apply.setVisible(false);
@@ -656,37 +654,8 @@ public final class MainController {
                 Integer.parseInt(this.getMinute().getText()));
         task.getCreateInterval().setIntervalSecond(
                 Integer.parseInt(this.getSecond().getText()));
-        if (Integer.parseInt(this.getMonth().getText()) < Constants.ZERO
-                || Integer.parseInt(this.getMonth().getText())
-                > Constants.MAX_MONTHS) {
-            LOGGER.warn(Error.ERROR_COUNT_MONTHS.message());
-            str1 +=  Error.ERROR_COUNT_MONTHS.message() + Constants.ENTER;
-        }
-        if (Integer.parseInt(this.getDay().getText()) < Constants.ZERO
-                || Integer.parseInt(this.getDay().getText())
-                > Constants.MAX_DAYS) {
-            LOGGER.warn(Error.ERROR_COUNT_DAYS.message());
-            str1 += Error.ERROR_COUNT_DAYS.message() + Constants.ENTER;
-        }
-        if (Integer.parseInt(this.getHour().getText()) < Constants.ZERO
-                || Integer.parseInt(this.getHour().getText())
-                > Constants.MAX_HOURS) {
-            LOGGER.warn(Error.ERROR_COUNT_HOURS.message());
-            str1 += Error.ERROR_COUNT_HOURS.message() + Constants.ENTER;
-        }
-        if (Integer.parseInt(this.getMinute().getText()) < Constants.ZERO
-                || Integer.parseInt(this.getMinute().getText())
-                > Constants.MAX_MINUTES) {
-            LOGGER.warn(Error.ERROR_COUNT_MINUTES.message());
-            str1 += Error.ERROR_COUNT_MINUTES.message() + Constants.ENTER;
-        }
-        if (Integer.parseInt(this.getSecond().getText()) < Constants.ZERO
-                || Integer.parseInt(this.getSecond().getText())
-                > Constants.MAX_SECONDS) {
-            LOGGER.warn(Error.ERROR_COUNT_SECONDS.message());
-            str1 += Error.ERROR_COUNT_SECONDS.message() + Constants.ENTER;
-        }
-        return str1;
+        return task.getCreateInterval().errorInterval()
+                + task.getCreateInterval().errorEmptyInterval();
     }
 
     /**

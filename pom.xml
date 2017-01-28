@@ -20,7 +20,7 @@
                         <manifest>
                             <addClasspath>true</addClasspath>
                             <classpathPrefix>lib/</classpathPrefix>
-                            <mainClass>com.netcracker.java.YuliaShevchenko.lab1.mainclass.Main</mainClass>
+                            <mainClass>com.netcracker.java.yulia_shevchenko.lab1.mainclass.Main</mainClass>
                         </manifest>
                     </archive>
                 </configuration>

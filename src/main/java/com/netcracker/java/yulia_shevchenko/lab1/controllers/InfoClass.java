@@ -1,6 +1,6 @@
-package com.netcracker.java.YuliaShevchenko.lab1.controllers;
+package com.netcracker.java.yulia_shevchenko.lab1.controllers;
 
-import com.netcracker.java.YuliaShevchenko.lab1.model.Constants;
+import com.netcracker.java.yulia_shevchenko.lab1.model.Constants;
 
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.DatePicker;

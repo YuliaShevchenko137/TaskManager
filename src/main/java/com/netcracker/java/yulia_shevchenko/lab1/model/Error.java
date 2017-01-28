@@ -1,4 +1,4 @@
-package com.netcracker.java.YuliaShevchenko.lab1.model;
+package com.netcracker.java.yulia_shevchenko.lab1.model;
 
 /**
  * The enumeration of possible errors.

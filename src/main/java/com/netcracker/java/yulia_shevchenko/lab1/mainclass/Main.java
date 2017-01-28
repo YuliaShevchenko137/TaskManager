@@ -1,6 +1,6 @@
-package com.netcracker.java.YuliaShevchenko.lab1.mainclass;
+package com.netcracker.java.yulia_shevchenko.lab1.mainclass;
 
-import com.netcracker.java.YuliaShevchenko.lab1.controllers.MainController;
+import com.netcracker.java.yulia_shevchenko.lab1.controllers.MainController;
 
 import org.apache.log4j.Logger;
 
@@ -17,7 +17,7 @@ import javafx.stage.Stage;
  * Start application.
  */
 
-public final class Main extends Application {
+public class Main extends Application {
 
     /**
      * It is used to register error.
@@ -52,7 +52,7 @@ public final class Main extends Application {
     public void start(final Stage primaryStage) throws IOException {
         LOGGER.info("start working");
         FXMLLoader mainfxmlLoader = new FXMLLoader();
-        mainfxmlLoader.setLocation(getClass().getResource("/com/netcracker/java/YuliaShevchenko/lab1/view/main.fxml"));
+        mainfxmlLoader.setLocation(getClass().getResource("/com/netcracker/java/yulia_shevchenko/lab1/view/main.fxml"));
         Parent root = mainfxmlLoader.load();
         primaryStage.setTitle("Task Manager");
         MainController mainController = mainfxmlLoader.getController();
