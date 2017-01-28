@@ -10,17 +10,16 @@ import javafx.scene.control.Alert;
  */
 
 public class ThreadTask {
+    /**
+     * tasks.
+     */
+    private ArrayTaskList thisTasks;
 
     /**
      *map with calls.
      * true, if the notification was at this time.
      */
     private Map<Date, Boolean> timeStamps;
-
-    /**
-     * Thread for notification.
-     */
-    private Thread thread;
 
     /**
      * close thread.
@@ -33,7 +32,7 @@ public class ThreadTask {
      * @param tasks current tasks for alert.
      */
     public ThreadTask(final ArrayTaskList tasks) {
-        ArrayTaskList thisTasks = tasks;
+         this.thisTasks = tasks;
         this.timeStamps = new TreeMap<>();
         new Thread(() -> {
             while (work) {
@@ -73,8 +72,7 @@ public class ThreadTask {
                     }
                 }
             }
-        });
-        this.thread.start();
+        }).start();
     }
 
     /**
@@ -90,17 +88,19 @@ public class ThreadTask {
         Map<Date, Set<Task>> map = Tasks.calendar(list,
                 OperationForTime.nowTime(), nowPlusHalfMinute);
         for (Date date : map.keySet()) {
-            Set<Task> set = map.get(date);
-            for (Task thisTask : set) {
-                Platform.runLater(() -> {
-                    Alert inf = new Alert(Alert.
-                            AlertType.INFORMATION);
-                    inf.setTitle("Notification");
-                    inf.setHeaderText("At " + date
-                            + " it is necessary to perform:"
-                            + Constants.ENTER + thisTask.getTitle());
-                    inf.show();
-                });
+            if(!timeStamps.isEmpty()) {
+                Set<Task> set = map.get(date);
+                for (Task thisTask : set) {
+                    Platform.runLater(() -> {
+                        Alert inf = new Alert(Alert.
+                                AlertType.INFORMATION);
+                        inf.setTitle("Notification");
+                        inf.setHeaderText("At " + date
+                                + " it is necessary to perform:"
+                                + Constants.ENTER + thisTask.getTitle());
+                        inf.show();
+                    });
+                }
             }
             timeStamps.put(date, true);
         }
